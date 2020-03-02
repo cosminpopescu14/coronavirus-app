@@ -1,5 +1,6 @@
 package com.example.coronavirusdemo.services;
 
+import com.example.coronavirusdemo.models.CoronaVirus;
 import com.example.coronavirusdemo.models.CoronaVirusStats;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
@@ -20,9 +21,9 @@ import java.util.List;
 public class CoronaVirusDataService {
 
     private final static String DATA_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv";
-    private List<CoronaVirusStats> allStats = new ArrayList<>();
+    private List<CoronaVirus> allStats = new ArrayList<>();
 
-    public List<CoronaVirusStats> getAllStats() {
+    public List<CoronaVirus> getAllStats() {
         return allStats;
     }
 
@@ -30,7 +31,7 @@ public class CoronaVirusDataService {
     @Scheduled(cron = "* * 1 * * *")
     public void fetchData() throws IOException, InterruptedException {
 
-        List<CoronaVirusStats> newStats = new ArrayList<>();
+        List<CoronaVirus> newStats = new ArrayList<>();
         var httpClient = HttpClient.newHttpClient();
         var httpRequest = HttpRequest.newBuilder()
                 .uri(URI.create(DATA_URL))
@@ -43,16 +44,18 @@ public class CoronaVirusDataService {
 
 
         for(var record : records) {
-            var stats = new CoronaVirusStats();
 
-            stats.setState(record.get("Province/State"));
-            stats.setCountry(record.get("Country/Region"));
+
+            /*stats.state(record.get("Province/State"));
+            stats.country(record.get("Country/Region"));*/
 
             var latestCases = Integer.parseInt(record.get(record.size() - 1));
             var prevDayCases = Integer.parseInt(record.get(record.size() - 2));
 
-            stats.setLatestTotalCases(latestCases);
-            stats.setDiffFromPrevDay(latestCases - prevDayCases); //current - prev
+            /*stats.setLatestTotalCases(latestCases);
+            stats.setDiffFromPrevDay(latestCases - prevDayCases); //current - prev*/
+            var stats = new CoronaVirus(record.get("Province/State"), record.get("Country/Region"),
+                    latestCases, (latestCases - prevDayCases));
             newStats.add(stats);
         }
         this.allStats = newStats;
