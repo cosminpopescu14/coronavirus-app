@@ -7,6 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+//https://www.youtube.com/watch?v=8hjNG9GZGnQ
 @SpringBootApplication
 @EnableScheduling
 public class CoronavirusDemoApplication {

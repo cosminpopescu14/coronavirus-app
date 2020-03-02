@@ -53,6 +53,7 @@ public class CoronaVirusDataService {
 
             stats.setLatestTotalCases(latestCases);
             stats.setDiffFromPrevDay(latestCases - prevDayCases); //current - prev
+            newStats.add(stats);
         }
         this.allStats = newStats;
     }
