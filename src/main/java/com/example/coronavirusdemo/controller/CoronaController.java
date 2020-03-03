@@ -6,11 +6,13 @@ import com.example.coronavirusdemo.services.CoronaVirusDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
 @Controller
+@CrossOrigin(origins = "*")
 public class CoronaController {
 
     @Autowired
@@ -28,5 +30,10 @@ public class CoronaController {
         model.addAttribute("totalNewCases", totalNewCases);
 
         return "home";
+    }
+
+    @GetMapping("/chart2")
+    public String chart() {
+        return "chart";
     }
 }
