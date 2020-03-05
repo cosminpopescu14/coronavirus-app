@@ -1,15 +1,15 @@
 package com.example.coronavirusdemo.models;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 public class CoronaRestResponse {
 
 
-    public Long getUnixTime() {
+    public LocalDate getUnixTime() {
         return unixTime;
     }
 
-    public void setUnixTime(Long unixTime) {
+    public void setUnixTime(LocalDate unixTime) {
         this.unixTime = unixTime;
     }
 
@@ -29,7 +29,14 @@ public class CoronaRestResponse {
                '}';
     }
 
-    private Long unixTime;
+    public CoronaRestResponse(){}
+
+    public CoronaRestResponse(LocalDate unixTime, int cases) {
+        this.unixTime = unixTime;
+        this.cases = cases;
+    }
+
+    private LocalDate unixTime;
     private int cases;
 
 

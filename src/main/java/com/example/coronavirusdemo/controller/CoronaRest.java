@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -17,13 +20,16 @@ public class CoronaRest {
     CoronaVirusDataService coronaVirusDataService;
 
     @GetMapping("/chart")
-    public CoronaRestResponse chart() {
+    public List<CoronaRestResponse> chart() {
         List<CoronaVirusStats> coronaVirusStats = coronaVirusDataService.getAllStats();
-        var response = new CoronaRestResponse();
-        var totalReportedCases = coronaVirusStats.stream().mapToInt(CoronaVirusStats::getLatestTotalCases).sum();
-        response.setUnixTime(Instant.now().getEpochSecond());
-        response.setCases(totalReportedCases);
-        System.out.println(response);
-        return response;
+
+        var totalReportedCases = coronaVirusStats
+                .stream()
+                .mapToInt(CoronaVirusStats::getLatestTotalCases)
+                .sum();
+
+        System.out.println(List.of(new CoronaRestResponse(LocalDate.now(ZoneId.of("Europe/Bucharest")), totalReportedCases)));
+        return List
+                .of(new CoronaRestResponse(LocalDate.now(ZoneId.of("Europe/Bucharest")), totalReportedCases));
     }
 }
