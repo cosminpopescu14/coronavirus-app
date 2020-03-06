@@ -1,8 +1,13 @@
 package com.example.coronavirusdemo.services;
 
+import com.example.coronavirusdemo.dal.Cases;
+import com.example.coronavirusdemo.dal.CasesRepository;
 import com.example.coronavirusdemo.models.CoronaVirusStats;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +18,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +32,11 @@ public class CoronaVirusDataService {
     public List<CoronaVirusStats> getAllStats() {
         return allStats;
     }
+
+    @Autowired
+    private CasesRepository casesRepository;
+
+    private static final Logger log = LoggerFactory.getLogger(CoronaVirusDataService.class);
 
     @PostConstruct
     @Scheduled(cron = "* * 1 * * *")
@@ -56,5 +68,22 @@ public class CoronaVirusDataService {
             newStats.add(stats);
         }
         this.allStats = newStats;
+        save();
+    }
+
+    public void save() {
+        var coronaVirusStats = getAllStats();
+
+        var date = LocalDate.now(ZoneId.of("Europe/Bucharest"));
+        var totalCases = coronaVirusStats.stream()
+                .mapToLong(CoronaVirusStats::getLatestTotalCases)
+                .sum();
+        var cases = new Cases(date, totalCases);
+        casesRepository.save(cases);
+        log.info("Persisted record {0}, {1}, {2}", cases.toString());
+    }
+
+    public List<Cases> findAllCases() {
+        return casesRepository.findAll();
     }
 }
