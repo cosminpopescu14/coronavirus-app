@@ -1,9 +1,6 @@
 package com.example.coronavirusdemo.dal;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
@@ -13,7 +10,10 @@ public class Cases {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
+    @Column(unique=true)
     private LocalDate date;
+
+    @Column(unique=true)
     private Long cases;
 
     protected Cases() {} //The default constructor exists only for the sake of JPA. You do not use it directly, so it is designated as protected.
@@ -47,10 +47,4 @@ public class Cases {
                ", cases=" + cases +
                '}';
     }
-
-
-
-
-
-
 }

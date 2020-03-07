@@ -1,9 +1,8 @@
 package com.example.coronavirusdemo.controller;
 
 
+import com.example.coronavirusdemo.jobs.DataFetchingJob;
 import com.example.coronavirusdemo.models.CoronaVirusStats;
-import com.example.coronavirusdemo.services.CoronaVirusDataService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,12 +14,15 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 public class CoronaController {
 
-    @Autowired
-    CoronaVirusDataService coronaVirusDataService;
+    DataFetchingJob dataFetchingJob;
+
+    public CoronaController(DataFetchingJob dataFetchingJob) {
+        this.dataFetchingJob = dataFetchingJob;
+    }
 
     @GetMapping("/")
     public String home(Model model) {
-        List<CoronaVirusStats> coronaVirusStats = coronaVirusDataService.getAllStats();
+        List<CoronaVirusStats> coronaVirusStats = dataFetchingJob.getAllStats();
 
         var totalReportedCases = coronaVirusStats.stream().mapToInt(CoronaVirusStats::getLatestTotalCases).sum();
         var totalNewCases = coronaVirusStats.stream().mapToInt(CoronaVirusStats::getDiffFromPrevDay).sum();
