@@ -67,6 +67,12 @@
 			<scope>runtime</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>io.hypersistence</groupId>
+			<artifactId>hypersistence-optimizer</artifactId>
+			<version>2.0.1-trial</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
