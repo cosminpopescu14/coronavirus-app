@@ -33,7 +33,7 @@ public class DataFetchingJob {
         return allStats;
     }
 
-    //the Lazy adnotation is due to avoid circular dependency. It it a workaround
+    //the Lazy annotation is due to avoid circular dependency. It it a workaround
     //the design shoud be revised in order to avoid that
     //https://docs.spring.io/spring/docs/4.3.10.RELEASE/spring-framework-reference/htmlsingle/#beans-dependency-resolution
     public DataFetchingJob(@Lazy CoronaVirusDataService coronaVirusDataService) {
@@ -43,10 +43,8 @@ public class DataFetchingJob {
     @Value("${corona.data.url}")
     private String DATA_URL; //must not be static or final
 
-
-
     @PostConstruct
-    @Scheduled(cron = "* * 1 * * *")
+    @Scheduled(cron = "0 0 9 * * *")
     public void fetchData() throws IOException, InterruptedException {
 
         List<CoronaVirusStats> newStats = new ArrayList<>();
