@@ -44,7 +44,7 @@ public class DataFetchingJob {
     private String DATA_URL; //must not be static or final
 
     @PostConstruct
-    @Scheduled(cron = "0 0 9 * * *")
+    @Scheduled(cron = "0 0 7 * * *")
     public void fetchData() throws IOException, InterruptedException {
 
         List<CoronaVirusStats> newStats = new ArrayList<>();

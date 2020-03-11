@@ -20,5 +20,4 @@ public class HypersistenceAnalyzer implements CommandLineRunner {
         System.out.println("Analyzing JPA & Hibernate setup");
         new HypersistenceOptimizer(new JpaConfig(entityManagerFactory));
     }
-
 }

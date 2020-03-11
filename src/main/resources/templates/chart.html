@@ -20,9 +20,9 @@
     <script>
 
         let chartData = [];
-
+        const url = window.location.protocol + "//" + window.location.host + "/" + "chart";
         function getData(){
-            $.getJSON('http://localhost:8080/chart', data => {
+            $.getJSON(url, data => {
                 Highcharts.each(data, function(el) {
                     el.x = new Date(el.unixTime).getTime();
                     el.y = Number(el.cases);
