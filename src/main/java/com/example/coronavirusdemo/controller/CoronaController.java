@@ -38,4 +38,9 @@ public class CoronaController {
     public String chart() {
         return "chart";
     }
+
+    @GetMapping("/roStats")
+    public String stats() {
+        return "roStats";
+    }
 }

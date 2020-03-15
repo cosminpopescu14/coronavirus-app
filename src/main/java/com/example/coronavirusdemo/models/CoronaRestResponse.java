@@ -2,8 +2,11 @@ package com.example.coronavirusdemo.models;
 
 import java.time.LocalDate;
 
+//For corona cases globally
 public class CoronaRestResponse {
 
+    private LocalDate unixTime;
+    private int cases;
 
     public LocalDate getUnixTime() {
         return unixTime;
@@ -35,9 +38,4 @@ public class CoronaRestResponse {
         this.unixTime = unixTime;
         this.cases = cases;
     }
-
-    private LocalDate unixTime;
-    private int cases;
-
-
 }
