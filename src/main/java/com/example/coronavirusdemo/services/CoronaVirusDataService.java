@@ -47,7 +47,7 @@ public class CoronaVirusDataService {
 
         try {
             casesRepository.save(cases);
-            log.info("Persisted record", cases.toString());
+            log.info("Persisted record {}", cases);
         }
         catch (DataIntegrityViolationException ex) {
             log.info("An exception of data integrity occurred", ex);

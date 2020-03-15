@@ -1,27 +1,24 @@
 package com.example.coronavirusdemo.jobs;
 
-import com.example.coronavirusdemo.models.CoronaVirusStatsRo;
+import com.example.coronavirusdemo.models.CoronaVirusStats;
 import com.example.coronavirusdemo.models.StatsRo;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
-import org.springframework.http.codec.json.Jackson2JsonDecoder;
-import org.springframework.http.codec.json.Jackson2JsonEncoder;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.annotation.PostConstruct;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
-//TODO
-// The deserializasion is not done correctly
+import static java.time.LocalDateTime.now;
+
+
 @Component
 public class DataFetchingJobFromApi {
 
@@ -29,28 +26,45 @@ public class DataFetchingJobFromApi {
 
     //Doresc sa multumesc comunitatii http://geo-spatial.org/ pentru api-urile puse la dispozitie
     @Value("${api.url}")
-    private String DATA_URL; //must not be static or final
+    private String DATA_URL;
 
-    @Autowired
     private WebClient.Builder webClient;
 
+    public DataFetchingJobFromApi(WebClient.Builder webClient) {
+        this.webClient = webClient;
+    }
+
+    private List<StatsRo> allStats = new ArrayList<>();
+    public List<StatsRo> getAllStats() {
+        return allStats;
+    }
 
     @PostConstruct
     @Scheduled(cron = "0 0/5 * * * ?") //run on 5 min basis
     public void getData() {
 
         var formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-        log.info("job {} started at {}", getClass().getMethods()[0], LocalDateTime.now().format(formatter));
+        log.info("job {} started at {}", getClass().getMethods()[0], now().format(formatter));
 
-        var roStats = webClient
-                        .build()
-                        .get()
-                        .uri(DATA_URL)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .retrieve()
-                        .bodyToMono(StatsRo.class)
-                        .block();
+
+        StatsRo roStats = null;
+        try {
+            roStats = webClient
+                            .build()
+                            .get()
+                            .uri(DATA_URL)
+                            .accept(MediaType.APPLICATION_JSON)
+                            .retrieve()
+                            .bodyToMono(StatsRo.class)
+                            .block();
+
+            allStats.add(roStats);
+        }
+        catch (Exception e) {
+            log.error("Exception including loss of connectivity or could not deserialize", e);
+        }
 
         System.out.println(roStats.getData().getTotal());
+
     }
 }

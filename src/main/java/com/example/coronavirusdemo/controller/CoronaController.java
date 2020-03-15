@@ -2,7 +2,9 @@ package com.example.coronavirusdemo.controller;
 
 
 import com.example.coronavirusdemo.jobs.DataFetchingJob;
+import com.example.coronavirusdemo.jobs.DataFetchingJobFromApi;
 import com.example.coronavirusdemo.models.CoronaVirusStats;
+import com.example.coronavirusdemo.models.StatsRo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,9 +17,11 @@ import java.util.List;
 public class CoronaController {
 
     DataFetchingJob dataFetchingJob;
+    DataFetchingJobFromApi dataFetchingJobFromApi;
 
-    public CoronaController(DataFetchingJob dataFetchingJob) {
+    public CoronaController(DataFetchingJob dataFetchingJob, DataFetchingJobFromApi dataFetchingJobFromApi) {
         this.dataFetchingJob = dataFetchingJob;
+        this.dataFetchingJobFromApi = dataFetchingJobFromApi;
     }
 
     @GetMapping("/")
@@ -40,7 +44,14 @@ public class CoronaController {
     }
 
     @GetMapping("/roStats")
-    public String stats() {
+    public String stats(Model model) {
+
+        var totalCasesInRo = dataFetchingJobFromApi.getAllStats().get(0).getData().getTotal();
+        var statisticsPerCounty = dataFetchingJobFromApi.getAllStats().get(0).getData().getData();
+
+        model.addAttribute("totalRoCases", totalCasesInRo);
+        model.addAttribute("statisticsPerCounty", statisticsPerCounty);
+
         return "roStats";
     }
 }

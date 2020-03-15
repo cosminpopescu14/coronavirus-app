@@ -7,7 +7,7 @@ public class CoronaVirusData {
 
     private String countyCode;
     private Long totalCounty;
-    private Long totalHealed;
+    private Long totalHealed; //:)
     private Long totalDead;
     private String county;
 

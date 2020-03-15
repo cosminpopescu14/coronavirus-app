@@ -28,6 +28,7 @@ public class DataFetchingJob {
 
 
     private CoronaVirusDataService coronaVirusDataService;
+
     private List<CoronaVirusStats> allStats = new ArrayList<>();
     public List<CoronaVirusStats> getAllStats() {
         return allStats;
