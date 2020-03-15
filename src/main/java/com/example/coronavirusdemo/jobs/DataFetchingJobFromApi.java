@@ -27,7 +27,7 @@ public class DataFetchingJobFromApi {
 
     private static final Logger log = LoggerFactory.getLogger(DataFetchingJobFromApi.class);
 
-    //Doresc sa multumesc comunitatii
+    //Doresc sa multumesc comunitatii http://geo-spatial.org/ pentru api-urile puse la dispozitie
     @Value("${api.url}")
     private String DATA_URL; //must not be static or final
 
