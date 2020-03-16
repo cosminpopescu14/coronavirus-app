@@ -5,6 +5,8 @@ import com.example.coronavirusdemo.jobs.DataFetchingJob;
 import com.example.coronavirusdemo.jobs.DataFetchingJobFromApi;
 import com.example.coronavirusdemo.models.CoronaVirusStats;
 import com.example.coronavirusdemo.models.StatsRo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,6 +17,8 @@ import java.util.List;
 @Controller
 @CrossOrigin(origins = "*")
 public class CoronaController {
+
+    private static final Logger log = LoggerFactory.getLogger(CoronaController.class);
 
     DataFetchingJob dataFetchingJob;
     DataFetchingJobFromApi dataFetchingJobFromApi;
@@ -49,6 +53,7 @@ public class CoronaController {
         var totalCasesInRo = dataFetchingJobFromApi.getAllStats().get(0).getData().getTotal();
         var statisticsPerCounty = dataFetchingJobFromApi.getAllStats().get(0).getData().getData();
 
+        dataFetchingJobFromApi.getAllStats().forEach(s -> log.info(s.getData().getTotal().toString()));
         model.addAttribute("totalRoCases", totalCasesInRo);
         model.addAttribute("statisticsPerCounty", statisticsPerCounty);
 

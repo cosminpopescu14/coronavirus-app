@@ -11,5 +11,10 @@ public class StatsRo {
     @JsonProperty("data")
     public void setData(CoronaVirusStatsRo value) { this.data = value; }
 
-
+    @Override
+    public String toString() {
+        return "StatsRo{" +
+               "data=" + data +
+               '}';
+    }
 }

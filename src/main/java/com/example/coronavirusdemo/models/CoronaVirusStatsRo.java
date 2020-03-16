@@ -20,4 +20,11 @@ public class CoronaVirusStatsRo {
     public List<CoronaVirusData> getData() { return data; }
     @JsonProperty("data")
     public void setData(List<CoronaVirusData> value) { this.data = value; }
+
+    @Override
+    public String toString() {
+        return "CoronaVirusStatsRo{" +
+               "total=" + total +
+               '}';
+    }
 }

@@ -45,11 +45,10 @@ public class DataFetchingJobFromApi {
 
         var formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         log.info("job {} started at {}", getClass().getMethods()[0], now().format(formatter));
+        var newStats = new ArrayList<StatsRo>();
 
-
-        StatsRo roStats = null;
         try {
-            roStats = webClient
+            var roStats = webClient
                             .build()
                             .get()
                             .uri(DATA_URL)
@@ -58,13 +57,12 @@ public class DataFetchingJobFromApi {
                             .bodyToMono(StatsRo.class)
                             .block();
 
-            allStats.add(roStats);
+            newStats.add(roStats);
+            this.allStats = newStats;
+            log.info("Got a fresh case {} at {}", allStats.get(0).getData().getTotal(), now().format(formatter));
         }
         catch (Exception e) {
             log.error("Exception including loss of connectivity or could not deserialize", e);
         }
-
-        System.out.println(roStats.getData().getTotal());
-
     }
 }
