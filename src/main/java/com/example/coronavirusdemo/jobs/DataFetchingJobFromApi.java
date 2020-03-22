@@ -1,7 +1,9 @@
 package com.example.coronavirusdemo.jobs;
 
+import com.example.coronavirusdemo.models.CoronaVirusData;
 import com.example.coronavirusdemo.models.CoronaVirusStats;
 import com.example.coronavirusdemo.models.StatsRo;
+import com.example.coronavirusdemo.services.CoronaVirusDataService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +31,11 @@ public class DataFetchingJobFromApi {
     private String DATA_URL;
 
     private WebClient.Builder webClient;
+    private CoronaVirusDataService coronaVirusDataService;
 
-    public DataFetchingJobFromApi(WebClient.Builder webClient) {
+    public DataFetchingJobFromApi(WebClient.Builder webClient, CoronaVirusDataService coronaVirusDataService) {
         this.webClient = webClient;
+        this.coronaVirusDataService = coronaVirusDataService;
     }
 
     private List<StatsRo> allStats = new ArrayList<>();
@@ -59,6 +63,7 @@ public class DataFetchingJobFromApi {
 
             newStats.add(roStats);
             this.allStats = newStats;
+            coronaVirusDataService.saveRoCases();
             log.info("Got a fresh case {} at {}", allStats.get(0).getData().getTotal(), now().format(formatter));
         }
         catch (Exception e) {

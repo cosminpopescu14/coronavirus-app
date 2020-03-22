@@ -79,6 +79,6 @@ public class DataFetchingJob {
             }
         }
         this.allStats = newStats;
-        coronaVirusDataService.save();
+        coronaVirusDataService.saveGlobalCases();
     }
 }
