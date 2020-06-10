@@ -29,49 +29,46 @@
                 <a class="nav-link" href="/roStats">Statistics for Romania <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/chart2">View chart</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/roChart">View chart for Romania</a>
+                <a class="nav-link" href="/chart2">View chart (page is WIP 🙂 )</a>
             </li>
         </ul>
     </div>
 </nav>
 <div id="container" style="height: 400px; min-width: 310px"></div>
-    <script>
+<script>
 
-        let chartData = [];
-        const url = window.location.protocol + "//" + window.location.host + "/" + "chart";
-        function getData(){
-            $.getJSON(url, data => {
-                Highcharts.each(data, function(el) {
-                    el.x = new Date(el.unixTime).getTime();
-                    el.y = Number(el.cases);
-                    chartData.push(el);
-                });
-
-                chartData.sort((a, b) => {
-                    return a.x - b.x
-                });
-                chart.series[0].setData(chartData);
+    let chartData = [];
+    const url = window.location.protocol + "//" + window.location.host + "/" + "rochart";
+    function getData(){
+        $.getJSON(url, data => {
+            Highcharts.each(data, function(el) {
+                el.x = new Date(el.dateTime).getTime();
+                el.y = Number(el.cases);
+                chartData.push(el);
             });
-        }
 
-        const chart = Highcharts.chart('container', {
-            xAxis: {
-                type: 'datetime'
-            },
-            title: {
-                text: 'Corona virus cases'
-            },
-            chart: {
-                type: 'line',
-                zoomType: 'x',
-            },
-
-            series: [{data: [], name: 'Corona virus infections'}]
+            chartData.sort((a, b) => {
+                return a.x - b.x
+            });
+            chart.series[0].setData(chartData);
         });
-        getData()
-    </script>
+    }
+
+    const chart = Highcharts.chart('container', {
+        xAxis: {
+            type: 'datetime'
+        },
+        title: {
+            text: 'Corona virus cases'
+        },
+        chart: {
+            type: 'line',
+            zoomType: 'x',
+        },
+
+        series: [{data: [], name: 'Corona virus infections in Romania'}]
+    });
+    getData()
+</script>
 </body>
 </html>

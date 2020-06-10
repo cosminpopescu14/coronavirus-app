@@ -59,4 +59,9 @@ public class CoronaController {
 
         return "roStats";
     }
+
+    @GetMapping("/roChart")
+    public String roChart() {
+        return "roChart";
+    }
 }

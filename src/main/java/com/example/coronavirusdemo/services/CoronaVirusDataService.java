@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -31,10 +30,11 @@ public class CoronaVirusDataService {
     @Autowired
     private RoCasesRepository roCasesRepository;
 
-    private DataFetchingJob dataFetchingJob;
-    private DataFetchingJobFromApi dataFetchingJobFromApi;
+    private final DataFetchingJob dataFetchingJob;
+    private final DataFetchingJobFromApi dataFetchingJobFromApi;
 
-    public CoronaVirusDataService(@Lazy DataFetchingJob dataFetchingJob, @Lazy DataFetchingJobFromApi dataFetchingJobFromApi) {
+    public CoronaVirusDataService(@Lazy DataFetchingJob dataFetchingJob,
+                                  @Lazy DataFetchingJobFromApi dataFetchingJobFromApi) {
         this.dataFetchingJob = dataFetchingJob;
         this.dataFetchingJobFromApi = dataFetchingJobFromApi;
     }
@@ -85,5 +85,4 @@ public class CoronaVirusDataService {
     public List<RoCases> findAllRoCases() {
         return  roCasesRepository.findAll();
     }
-
 }
