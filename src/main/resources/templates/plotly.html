@@ -1,0 +1,53 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="apple-touch-icon" href="icon.png">
+    <!-- Place favicon.ico in the root directory -->
+    <meta name="theme-color" content="#fafafa">
+
+    <!-- Load plotly.js into the DOM -->
+    <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+</head>
+
+<body>
+
+<!-- Add your site or application content here -->
+<p>Hello world! This is HTML5 Boilerplate.</p>
+
+
+
+<div id='myDiv'><!-- Plotly chart will be drawn inside this DIV --></div>
+<script>
+    let url = "http://localhost:8080/chart" // a json endpoint
+    let xl = []
+    let yl = []
+
+    Plotly.d3.json(url, function(figure){
+        let data = figure
+        for (var i=0; i< data.length; i++) {
+            xl.push(data[i].unixTime)
+            yl.push(data[i].cases)
+        }
+        console.log(xl)
+        let trace = {
+            x: xl,
+            y: yl
+        }
+        Plotly.plot(document.getElementById("myDiv"), [trace]); }) // second argument must be an array
+</script>
+</body>
+
+</html>

@@ -64,4 +64,10 @@ public class CoronaController {
     public String roChart() {
         return "roChart";
     }
+
+    @GetMapping("/plotly")
+    public String showPlotly() {
+        return "plotly";
+    }
+
 }
